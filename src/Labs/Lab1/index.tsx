@@ -209,12 +209,8 @@ export default function Lab1() {
                 value="2000-01-21"
                 id="wd-text-fields-dob" /><br />
             <h4>Anchor tag</h4>
-            Please
-            <a href="https://www.lipsum.com" id="wd-lipsum">click here</a>
-            to get dummy text<br />
-            Please
-            <a href="https://www.lipsum.com" id="wd-github">click here</a>
-            to go to the code repository.<br />
+            Please<span> <a href="https://www.lipsum.com" id="wd-lipsum">click here</a> to get dummy text<br /></span>
+            Please<span> <a href="https://github.com/likhithreddy/kambaz-web-application.git" id="wd-github">click here</a> to go to the code repository.<br /></span>
         </div>
     );
 }
