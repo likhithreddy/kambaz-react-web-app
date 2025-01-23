@@ -23,8 +23,9 @@ export default function AssignmentEditor() {
                     <td>
                         <select id="wd-group">
                             <option value="assignments">ASSIGNMENTS</option>
-                            <option value="labs">LABS</option>
+                            <option value="quizzes">QUIZZES</option>
                             <option value="exams">EXAMS</option>
+                            <option value="project">PROJECT</option>
                         </select>
                     </td>
                 </tr>
@@ -62,11 +63,11 @@ export default function AssignmentEditor() {
                         <input type="checkbox" name="online-entry-options" id="wd-website-url" />
                         <label htmlFor="wd-website-url">Website URL</label><br />
                         <input type="checkbox" name="online-entry-options" id="wd-media-recordings" />
-                        <label htmlFor="wd-media=recordings">Media Recordings</label><br />
+                        <label htmlFor="wd-media-recordings">Media Recordings</label><br />
                         <input type="checkbox" name="online-entry-options" id="wd-student-annotation" />
                         <label htmlFor="wd-student-annotation">Student Annotation</label><br />
                         <input type="checkbox" name="online-entry-options" id="wd-file-upload" />
-                        <label htmlFor="wd-file-upload">File Upload</label><br />
+                        <label htmlFor="wd-file-upload">File Uploads</label><br />
                     </td>
                 </tr>
                 <br />
@@ -100,6 +101,7 @@ export default function AssignmentEditor() {
                     </td>
                 </tr>
             </table>
+            <button id="wd-cancel">Cancel</button> <button id="wd-save">Save</button>
         </div>
     );
 }

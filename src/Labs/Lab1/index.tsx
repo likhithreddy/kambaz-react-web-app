@@ -92,11 +92,53 @@ export default function Lab1() {
                             <td>2/17/21</td>
                             <td>95</td>
                         </tr>
+                        <tr>
+                            <td>Q4</td>
+                            <td>React</td>
+                            <td>2/24/21</td>
+                            <td>90</td>
+                        </tr>
+                        <tr>
+                            <td>Q5</td>
+                            <td>TypeScript</td>
+                            <td>3/2/21</td>
+                            <td>87</td>
+                        </tr>
+                        <tr>
+                            <td>Q6</td>
+                            <td>Angular</td>
+                            <td>3/9/21</td>
+                            <td>84</td>
+                        </tr>
+                        <tr>
+                            <td>Q7</td>
+                            <td>Node</td>
+                            <td>3/16/21</td>
+                            <td>89</td>
+                        </tr>
+                        <tr>
+                            <td>Q8</td>
+                            <td>Express</td>
+                            <td>3/23/21</td>
+                            <td>99</td>
+                        </tr>
+                        <tr>
+                            <td>Q9</td>
+                            <td>Netlify</td>
+                            <td>3/30/21</td>
+                            <td>99</td>
+                        </tr>
+                        <tr>
+                            <td>Q10</td>
+                            <td>Github</td>
+                            <td>4/6/21</td>
+                            <td>96</td>
+                        </tr>
                     </tbody>
                     <tfoot>
                         <tr>
                             <td colSpan={3}>Average</td>
-                            <td>90</td>
+                            <td>91.4</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -109,7 +151,7 @@ export default function Lab1() {
                 <br />
                 Loading a local image:
                 <br />
-                <img id="wd-shelby" src="shelby-mustang.jpeg" alt="shelby-mustang" height="300px" />
+                <img id="wd-teslabot" src="images/teslabot.jpg" alt="tesla-bot" height="200px" />
             </div>
             <div id="wd-forms">
                 <h4>Form Elements</h4>
@@ -210,7 +252,7 @@ export default function Lab1() {
                 id="wd-text-fields-dob" /><br />
             <h4>Anchor tag</h4>
             Please<span> <a href="https://www.lipsum.com" id="wd-lipsum">click here</a> to get dummy text<br /></span>
-            Please<span> <a href="https://github.com/likhithreddy/kambaz-web-application.git" id="wd-github">click here</a> to go to the code repository.<br /></span>
+            Code: Please<span> <a href="https://github.com/likhithreddy/kambaz-web-application.git" target="_blank" id="wd-github">click here</a> to go to the code repository.<br /></span>
         </div>
     );
 }
