@@ -37,6 +37,7 @@ export default function Lab1() {
                     <li>Serve and enjoy!</li>
                 </ol>
                 My favorite recipe:
+                How to make an omelette:
                 <ol id="wd-omelette">
                     <li>Beat 2-3 eggs with salt, pepper, and a splash of milk and whisk the eggs.</li>
                     <li>Heat butter or oil in a skillet over medium heat.</li>
@@ -252,7 +253,7 @@ export default function Lab1() {
                 id="wd-text-fields-dob" /><br />
             <h4>Anchor tag</h4>
             Please<span> <a href="https://www.lipsum.com" id="wd-lipsum">click here</a> to get dummy text<br /></span>
-            Code: Please<span> <a href="https://github.com/likhithreddy/kambaz-web-application.git" target="_blank" id="wd-github">click here</a> to go to the code repository.<br /></span>
+            Git Code Repository: Please<span> <a href="https://github.com/likhithreddy/kambaz-web-application.git" target="_blank" id="wd-github">click here</a> to go to the code repository.<br /></span>
         </div>
     );
 }
