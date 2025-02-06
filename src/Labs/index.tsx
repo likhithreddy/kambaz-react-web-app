@@ -1,5 +1,5 @@
 import Lab1 from "./Lab1";
-import { Route, Routes, Navigate } from "react-router";
+import { Route, Routes, Navigate, Link } from "react-router";
 import TOC from "./TOC.tsx";
 import Lab2 from "./Lab2";
 import Lab3 from "./Lab3";
@@ -7,6 +7,7 @@ export default function Labs() {
     return (
         <div>
             <h1>Labs - Likhith Reddy Rechintala</h1>
+            <a href="https://github.com/likhithreddy/kambaz-web-application.git" target="_blank" className="fs-4 text-decoration-none" id="wd-github">Kambaz Github Code Repository</a>
             <TOC />
             <Routes>
                 <Route path="/" element={<Navigate to="Lab1" />} />

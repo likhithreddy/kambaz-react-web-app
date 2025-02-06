@@ -1,58 +1,62 @@
+import { Col, Form, Row } from "react-bootstrap";
+
 export default function AssignmentEditor() {
     return (
-        <div id="wd-assignments-editor">
-            <label htmlFor="wd-name">Assignment Name</label><br />
-            <input id="wd-name" value="A1 - ENV + HTML" /><br /><br />
-            <textarea id="wd-description" rows={10} cols={50}>
-                The assignment is available online. Submit a link to the landing page ot your Web application running on Netlify. The page should include the following: Your full name and section Links to each of the lab assignments. Link to the Kambaz application. Links to all relevant source code repositories. The Kambaz application Should include a link to navigate back to the landing page.</textarea>
+        <Form id="wd-assignments-editor">
+            <Form.Group as={Col} controlId="formAssignmentName">
+                <Form.Label>Assignment Name</Form.Label>
+                <Form.Control type="text" placeholder="A1" value="A1" />
+            </Form.Group>
             <br />
+            <Form.Group className="mb-3" controlId="formAssignmentDescription">
+                <Form.Control as="textarea" rows={10} cols={50} value={`The assignment is available online. \n\nSubmit a link to the landing page ot your Web application running on Netlify. \n\nThe page should include the following: \nYour full name and section Links to each of the lab assignments. \nLink to the Kambaz application. \nLinks to all relevant source code repositories. \n\nThe Kambaz application Should include a link to navigate back to the landing page.`} />
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3" controlId="formAssignmentPoints">
+                <Form.Label column sm={2}>
+                    Points
+                </Form.Label>
+                <Col sm={10}>
+                    <Form.Control className="w-50" type="text" value={100} />
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3" controlId="formAssignmentGroup">
+                <Form.Label column sm={2}>
+                    Assignment Group
+                </Form.Label>
+                <Col sm={10}>
+                    <Form.Select className="w-50" >
+                        <option value="assignments">ASSIGNMENTS</option>
+                        <option value="quizzes">QUIZZES</option>
+                        <option value="exams">EXAMS</option>
+                        <option value="project">PROJECT</option>
+                    </Form.Select>
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3" controlId="formAssignmentGradeDisplay">
+                <Form.Label column sm={2}>
+                    Display Grade as
+                </Form.Label>
+                <Col sm={10}>
+                    <Form.Select className="w-50" >
+                        <option value="percentage">Percentage</option>
+                        <option value="points">Points</option>
+                    </Form.Select>
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3" controlId="formAssignmentSubmissionType">
+                <Form.Label column sm={2}>
+                    Submission Type
+                </Form.Label>
+                <Col sm={10}>
+                    <Form.Select className="w-50" >
+                        <option value="online">Online</option>
+                        <option value="offline">Offline</option>
+                    </Form.Select>
+                </Col>
+            </Form.Group>
+
             <table>
-                <tr>
-                    <td align="right" valign="top">
-                        <label htmlFor="wd-points">Points</label>
-                    </td>
-                    <td>
-                        <input id="wd-points" value={100} />
-                    </td>
-                </tr>
-                <br />
-                <tr>
-                    <td align="right" valign="top">
-                        <label htmlFor="wd-group">Assignment Group</label>
-                    </td>
-                    <td>
-                        <select id="wd-group">
-                            <option value="assignments">ASSIGNMENTS</option>
-                            <option value="quizzes">QUIZZES</option>
-                            <option value="exams">EXAMS</option>
-                            <option value="project">PROJECT</option>
-                        </select>
-                    </td>
-                </tr>
-                <br />
-                <tr>
-                    <td align="right" valign="top">
-                        <label htmlFor="wd-display-grade-as">Display Grade as</label>
-                    </td>
-                    <td>
-                        <select id="wd-display-grade-as">
-                            <option value="percentage">Percentage</option>
-                            <option value="points">Points</option>
-                        </select>
-                    </td>
-                </tr>
-                <br />
-                <tr>
-                    <td align="right" valign="top">
-                        <label htmlFor="wd-submission-type">Submission Type</label>
-                    </td>
-                    <td>
-                        <select id="wd-submission-type">
-                            <option value="online">Online</option>
-                            <option value="offline">Offline</option>
-                        </select>
-                    </td>
-                </tr>
+
                 <br />
                 <tr>
                     <td align="right" valign="top" />
@@ -102,6 +106,6 @@ export default function AssignmentEditor() {
                 </tr>
             </table>
             <button id="wd-cancel">Cancel</button>&nbsp;&nbsp;<button id="wd-save">Save</button>
-        </div>
+        </Form>
     );
 }

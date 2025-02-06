@@ -5,14 +5,7 @@ export default function PeopleTable() {
         <div id="wd-people-table">
             <Table striped>
                 <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Login ID</th>
-                        <th>Section</th>
-                        <th>Role</th>
-                        <th>Last Activity</th>
-                        <th>Total Activity</th>
-                    </tr>
+                    <tr><th>Name</th><th>Login ID</th><th>Section</th><th>Role</th><th>Last Activity</th><th>Total Activity</th></tr>
                 </thead>
                 <tbody>
                     <tr>
