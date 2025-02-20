@@ -8,11 +8,13 @@ export default function Signin() {
                 <Form.Control className="wd-user-credentials my-2" id="wd-username" placeholder="username" />
                 <Form.Control className="wd-user-credentials my-2" id="wd-password" placeholder="password" type="password" />
             </Form.Group>
-            <Button className="w-100" id="wd-signin-btn">
-                <Link className="text-decoration-none text-white" to="/Kambaz/Dashboard">
-                    Sign in
-                </Link>
-            </Button>
+            <Link
+                id="wd-signin-btn"
+                to="/Kambaz/Dashboard"
+                className="btn btn-primary w-100 mb-2"
+            >
+                Sign in
+            </Link>
             <Link id="wd-signup-link" className="my-3" to="/Kambaz/Account/Signup">
                 Sign up
             </Link>
