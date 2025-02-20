@@ -1,22 +1,26 @@
+import { Link, useParams } from "react-router";
+import * as db from "../../Database";
 import { Button, Col, Form, Row } from "react-bootstrap";
 
 export default function AssignmentEditor() {
+    const { cid, aid } = useParams();
+    const assignment = db.assignments.find((assignment: any) => assignment._id === aid);
     return (
         <Form id="wd-assignments-editor">
             <Form.Group as={Col} controlId="formAssignmentName">
                 <Form.Label>Assignment Name</Form.Label>
-                <Form.Control type="text" className="w-75" placeholder="A1" value="A1" />
+                <Form.Control type="text" className="w-75" placeholder="A1" value={assignment?.name} readOnly />
             </Form.Group>
             <br />
             <Form.Group className="mb-3" controlId="formAssignmentDescription">
-                <Form.Control as="textarea" className="w-75" rows={10} cols={50} value={`The assignment is available online. \n\nSubmit a link to the landing page ot your Web application running on Netlify. \n\nThe page should include the following: \nYour full name and section Links to each of the lab assignments. \nLink to the Kambaz application. \nLinks to all relevant source code repositories. \n\nThe Kambaz application Should include a link to navigate back to the landing page.`} />
+                <Form.Control as="textarea" className="w-75" rows={10} cols={50} value={assignment?.description} />
             </Form.Group>
             <Form.Group as={Row} className="mb-3" controlId="formAssignmentPoints">
                 <Form.Label column sm={2} className="d-flex justify-content-end">
                     Points
                 </Form.Label>
                 <Col sm={10}>
-                    <Form.Control className="w-50" type="text" value={100} />
+                    <Form.Control className="w-50" type="text" value={assignment?.points} />
                 </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3" controlId="formAssignmentGroup">
@@ -80,7 +84,7 @@ export default function AssignmentEditor() {
                         <Form.Label column>
                             Due
                         </Form.Label>
-                        <Form.Control type="date" value="2024-05-13" />
+                        <Form.Control type="date" value={assignment?.due_date} />
                     </Form.Group>
                     <Form.Group as={Row}>
                         <Col>
@@ -88,7 +92,7 @@ export default function AssignmentEditor() {
                                 <Form.Label>
                                     Available from
                                 </Form.Label>
-                                <Form.Control type="date" value="2024-05-06" />
+                                <Form.Control type="date" value={assignment?.start_date} />
                             </Form.Group>
                         </Col>
                         <Col>
@@ -105,8 +109,16 @@ export default function AssignmentEditor() {
 
             <br />
             <div className="d-flex justify-content-end w-75">
-                <Button variant="secondary" className="mx-2" id="wd-cancel">Cancel</Button>
-                <Button variant="danger" className="mx-2" id="wd-save">Save</Button>
+                <Link to={`/Kambaz/Courses/${cid}/Assignments`} className="wd-assignment-link d-block">
+                    <Button variant="secondary" size="lg" className="me-1 float-end" id="wd-add-module-btn">
+                        Save
+                    </Button>
+                </Link>
+                <Link to={`/Kambaz/Courses/${cid}/Assignments`} className="wd-assignment-link d-block">
+                    <Button variant="danger" size="lg" className="me-1 float-end" id="wd-add-module-btn">
+                        Cancel
+                    </Button>
+                </Link>
             </div>
         </Form>
     );
