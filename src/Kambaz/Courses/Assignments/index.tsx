@@ -1,3 +1,5 @@
+// import { useParams } from "react-router";
+// import * as db from "../../Database";
 import { ListGroup } from "react-bootstrap";
 import { BsGripVertical } from "react-icons/bs";
 import { MdOutlineAssignment } from "react-icons/md";
@@ -6,6 +8,8 @@ import AssignmentControlButtons from "./AssignmentControlButtons";
 import EachAssignmentControls from "./EachAssignmentControls";
 
 export default function Assignments() {
+    // const { cid } = useParams();
+    // const assignments = db.assignments;
     return (
         <div id="wd-assignments">
             <AssignmentsControls /><br /><br />
