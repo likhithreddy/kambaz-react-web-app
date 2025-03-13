@@ -6,19 +6,23 @@ import { MdOutlineAssignment } from "react-icons/md";
 import AssignmentsControls from "./AssignmentsControls";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import EachAssignmentControls from "./EachAssignmentControls";
+import { useSelector } from "react-redux";
 
 export default function Assignments() {
     const { cid } = useParams();
     const assignments = db.assignments;
+    const { currentUser } = useSelector((state: any) => state.accountReducer);
+
     return (
         <div id="wd-assignments">
-            <AssignmentsControls /><br /><br />
+            {currentUser?.role === "FACULTY" && <AssignmentsControls />}
+            <br /><br />
             <ListGroup className="rounded-0" id="wd-modules">
                 <ListGroup.Item className="wd-module p-0 mb-5 fs-5 border-gray">
                     <div className="wd-title p-3 ps-2 bg-secondary">
                         <BsGripVertical className="me-2 fs-3" />
                         ASSIGNMENTS
-                        <AssignmentControlButtons />
+                        {currentUser?.role === "FACULTY" && <AssignmentControlButtons />}
                     </div>
                     {assignments
                         .filter((assignment: any) => assignment.course === cid)
@@ -43,14 +47,13 @@ export default function Assignments() {
                                         </div>
                                     </div>
                                     <div className="ms-auto">
-                                        <EachAssignmentControls />
+                                        {currentUser?.role === "FACULTY" && <EachAssignmentControls />}
                                     </div>
                                 </ListGroup.Item>
                             </ListGroup>
                         ))}
                 </ListGroup.Item>
             </ListGroup>
-
         </div>
     );
 }
