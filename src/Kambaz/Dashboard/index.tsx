@@ -3,11 +3,15 @@ import { useSelector } from "react-redux";
 import * as db from "../Database";
 import { Link } from "react-router-dom";
 
-export default function Dashboard({ courses, course, setCourse, addNewCourse, deleteCourse, updateCourse }: {
-    courses: any[]; course: any; setCourse: (course: any) => void;
-    addNewCourse: () => void; deleteCourse: (course: any) => void;
-    updateCourse: () => void;
-}) {
+export default function Dashboard({ courses, setCourse, addNewCourse,
+    deleteCourse, updateCourse }: {
+        courses: any[];
+        course: any;
+        setCourse: (course: any) => void;
+        addNewCourse: () => void;
+        deleteCourse: (course: any) => void;
+        updateCourse: () => void;
+    }) {
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     const { enrollments } = db;
 
