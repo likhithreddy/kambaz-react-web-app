@@ -9,7 +9,7 @@ export default function AssignmentEditor() {
         <Form id="wd-assignments-editor">
             <Form.Group as={Col} controlId="formAssignmentName">
                 <Form.Label>Assignment Name</Form.Label>
-                <Form.Control type="text" className="w-75" placeholder="A1" value={assignment?.name} readOnly />
+                <Form.Control type="text" className="w-75" placeholder="A1" value={assignment?.name} />
             </Form.Group>
             <br />
             <Form.Group className="mb-3" controlId="formAssignmentDescription">
