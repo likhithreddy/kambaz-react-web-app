@@ -1,7 +1,6 @@
 import { ListGroup } from "react-bootstrap";
 import { BsGripVertical } from "react-icons/bs";
 import { MdOutlineAssignment } from "react-icons/md";
-import { IoCaretDown } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
 import AssignmentsControls from "./AssignmentsControls";
 import { useDispatch, useSelector } from "react-redux";
