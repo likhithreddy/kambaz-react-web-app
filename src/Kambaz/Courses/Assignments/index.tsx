@@ -16,7 +16,7 @@ export default function Assignments() {
     const { assignments } = useSelector((state: any) => state.assignmentReducer);
 
     const handleDelete = (assignmentId: string) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this assignment?");
+        const confirmDelete = window.confirm("This action is irreversible. Do you want to proceed to delete the assignment?");
         if (confirmDelete) {
             dispatch(deleteAssignment(assignmentId));
         }
@@ -30,7 +30,7 @@ export default function Assignments() {
                 <ListGroup.Item className="wd-module p-0 mb-5 fs-5 border-gray">
                     <div className="wd-title p-3 ps-2 bg-secondary">
                         <BsGripVertical className="me-2 fs-3" />
-                        ASSIGNMENTS
+                        <b>ASSIGNMENTS</b>
                         {currentUser?.role === "FACULTY" && <AssignmentControlButtons />}
                     </div>
                     {assignments
@@ -42,11 +42,12 @@ export default function Assignments() {
                                     <MdOutlineAssignment className="text-success" />
                                     <div className="mx-3">
                                         <div className="wd-assignment-list-item-details">
-                                            <Link
+                                            {currentUser?.role === "FACULTY" ? <Link
                                                 to={`/Kambaz/Courses/${cid}/Assignments/${assignment._id}`}
                                                 className="fs-5 fw-bold wd-assignment-link text-decoration-none text-black">
                                                 {assignment.name}
-                                            </Link>
+                                            </Link> : <span className="fs-5 fw-bold wd-assignment-link text-decoration-none text-black">
+                                                {assignment.name}</span>}
                                         </div>
                                         <div className="wd-assignment-list-item-details fs-6 ">
                                             <span className="text-danger"> Multiple Modules </span> | <strong>Not available until</strong> {assignment.start_date} |

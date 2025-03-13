@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleEnrollment, toggleShowAllEnrollments } from "./reducer";
 
-export default function Dashboard({ courses, setCourse, addNewCourse,
+export default function Dashboard({ courses, course, setCourse, addNewCourse,
     deleteCourse, updateCourse }: {
         courses: any[];
         course: any;
@@ -31,6 +31,18 @@ export default function Dashboard({ courses, setCourse, addNewCourse,
                             Update
                         </button>
                     </h5>
+                    <br />
+                    <input
+                        value={course.name}
+                        className="form-control mb-2"
+                        onChange={(e) => setCourse({ ...course, name: e.target.value })}
+                    />
+                    <textarea
+                        value={course.description}
+                        className="form-control"
+                        onChange={(e) => setCourse({ ...course, description: e.target.value })}
+                    />
+                    <hr />
                     <br />
                 </>
             )}
