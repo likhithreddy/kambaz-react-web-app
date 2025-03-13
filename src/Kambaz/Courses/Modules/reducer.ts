@@ -7,7 +7,8 @@ const initialState = {
 
 const modulesSlice = createSlice({
     name: "modules", initialState, reducers: {
-        addModule: (state, { payload: module }) => { const newModule: any = { _id: uuidv4(), lessons: [], name: module.name, course: module.course, }; state.modules = [...state.modules, newModule] as any; }, deleteModule: (state, { payload: moduleId }) => {
+        addModule: (state, { payload: module }) => { const newModule: any = { _id: uuidv4(), lessons: [], name: module.name, course: module.course, }; state.modules = [...state.modules, newModule] as any; },
+        deleteModule: (state, { payload: moduleId }) => {
             state.modules = state.modules.filter(
                 (m: any) => m._id !== moduleId);
         },
