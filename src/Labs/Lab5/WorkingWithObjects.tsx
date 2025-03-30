@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Form, FormControl } from "react-bootstrap";
 const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;
 
@@ -12,11 +12,6 @@ export default function WorkingWithObjects() {
         id: 1, name: "NodeJS Module", description: "Create a NodeJS module",
         course: "Introduction to NodeJS"
     });
-
-    useEffect(() => {
-        console.log("Assignment", assignment.completed);
-    }
-        , [assignment]);
 
     const ASSIGNMENT_API_URL = `${REMOTE_SERVER}/lab5/assignment`;
     const MODULE_API_URL = `${REMOTE_SERVER}/lab5/module`;
