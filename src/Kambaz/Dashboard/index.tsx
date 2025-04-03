@@ -1,7 +1,7 @@
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleEnrollment, toggleShowAllEnrollments } from "./reducer";
+import { useSelector } from "react-redux";
+// import { toggleEnrollment, toggleShowAllEnrollments } from "./reducer";
 
 export default function Dashboard({ courses, course, setCourse, addNewCourse,
     deleteCourse, updateCourse }: {
@@ -12,9 +12,9 @@ export default function Dashboard({ courses, course, setCourse, addNewCourse,
         deleteCourse: (course: any) => void;
         updateCourse: () => void;
     }) {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const { currentUser } = useSelector((state: any) => state.accountReducer);
-    const { enrollments, showAllEnrollments } = useSelector((state: any) => state.enrollmentReducer);
+    // const { enrollments, showAllEnrollments } = useSelector((state: any) => state.enrollmentReducer);
     return (
         <div id="wd-dashboard">
             <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
@@ -46,24 +46,27 @@ export default function Dashboard({ courses, course, setCourse, addNewCourse,
                     <br />
                 </>
             )}
-            <h2 id="wd-dashboard-published">Published Courses ({courses.filter((course) => enrollments.some((enrollment: any) => enrollment.user === currentUser._id && enrollment.course === course._id)).length})</h2> <hr />
-            {currentUser?.role === "STUDENT" && (<Button className="mb-3" onClick={() => dispatch(toggleShowAllEnrollments())}>Enrollments</Button>)}
+            <h2 id="wd-dashboard-published">Published Courses ({courses
+                // .filter((course) => enrollments.some((enrollment: any) => enrollment.user === currentUser._id && enrollment.course === course._id))
+                .length})</h2> <hr />
+            {/* {currentUser?.role === "STUDENT" && (<Button className="mb-3" onClick={() => dispatch(toggleShowAllEnrollments())}>Enrollments</Button>)} */}
             <div id="wd-dashboard-courses">
                 <Row xs={1} md={5} className="g-4">
                     {courses
-                        .filter((course) =>
-                            showAllEnrollments ||
-                            enrollments.some(
-                                (enrollment: any) =>
-                                    enrollment.user === currentUser._id &&
-                                    enrollment.course === course._id
-                            )
-                        ).map((course) => {
-                            const isEnrolled = enrollments.some(
-                                (enrollment: any) =>
-                                    enrollment.user === currentUser._id &&
-                                    enrollment.course === course._id
-                            );
+                        // .filter((course) =>
+                        //     showAllEnrollments ||
+                        //     enrollments.some(
+                        //         (enrollment: any) =>
+                        //             enrollment.user === currentUser._id &&
+                        //             enrollment.course === course._id
+                        //     )
+                        // )
+                        .map((course) => {
+                            // const isEnrolled = enrollments.some(
+                            //     (enrollment: any) =>
+                            //         enrollment.user === currentUser._id &&
+                            //         enrollment.course === course._id
+                            // );
                             return (
                                 <Col className="wd-dashboard-course" style={{ width: "300px" }}>
                                     <Card>
@@ -95,7 +98,7 @@ export default function Dashboard({ courses, course, setCourse, addNewCourse,
                                                         </button>
                                                     </>
                                                 )}
-                                                {currentUser?.role === "STUDENT" && (<Button
+                                                {/* {currentUser?.role === "STUDENT" && (<Button
                                                     variant={isEnrolled ? "danger" : "success"}
                                                     className="float-end me-2"
                                                     onClick={(e) => {
@@ -103,7 +106,7 @@ export default function Dashboard({ courses, course, setCourse, addNewCourse,
                                                         dispatch(toggleEnrollment({ userId: currentUser._id, courseId: course._id }))
                                                     }}>
                                                     {isEnrolled ? "Unenroll" : "Enroll"}
-                                                </Button>)}
+                                                </Button>)} */}
                                             </Card.Body>
                                         </Link>
                                     </Card>
