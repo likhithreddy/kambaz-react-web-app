@@ -13,7 +13,10 @@ export default function Labs() {
         <Provider store={store}>
             <div className="container-fluid">
                 <h1>Labs - Likhith Reddy Rechintala - Section 01</h1>
-                <a href="https://github.com/likhithreddy/kambaz-web-application.git" target="_blank" className="fs-4 text-decoration-none" id="wd-github">Kambaz Github Code Repository</a>
+                <a href="https://github.com/likhithreddy/kambaz-web-application.git" target="_blank" className="text-decoration-none" id="wd-react-app-github">Click here</a> to redirect to <b>Kambaz React Web App Github Repository</b>
+                <br />
+                <a href="https://github.com/likhithreddy/kambaz-web-application.git" target="_blank" className="text-decoration-none" id="wd-node-app-github">Click here</a> to redirect to <b>Kambaz Node Server App Github Repository</b>
+                <br />
                 <TOC />
                 <Routes>
                     <Route path="/" element={<Navigate to="Lab1" />} />
