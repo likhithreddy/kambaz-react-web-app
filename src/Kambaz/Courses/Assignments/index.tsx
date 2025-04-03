@@ -5,9 +5,12 @@ import { Link, useParams } from "react-router-dom";
 import AssignmentsControls from "./AssignmentsControls";
 import { useDispatch, useSelector } from "react-redux";
 import { FaTrash } from "react-icons/fa";
-import { deleteAssignment } from "./reducer";
+import { setAssignments, deleteAssignment } from "./reducer";
 import EachAssignmentControls from "./EachAssignmentControls";
 import AssignmentControlButtons from "./AssignmentControlButtons";
+import * as coursesClient from "../client";
+import * as assignmentsClient from "./client";
+import { useEffect } from "react";
 
 export default function Assignments() {
     const dispatch = useDispatch();
@@ -18,8 +21,21 @@ export default function Assignments() {
     const handleDelete = (assignmentId: string) => {
         const confirmDelete = window.confirm("This action is irreversible. Do you want to proceed to delete the assignment?");
         if (confirmDelete) {
-            dispatch(deleteAssignment(assignmentId));
+            removeAssignment(assignmentId);
         }
+    };
+
+    const fetchAssignments = async () => {
+        const assignments = await coursesClient.findAssignmentsForCourse(cid as string);
+        dispatch(setAssignments(assignments));
+    };
+    useEffect(() => {
+        fetchAssignments();
+    }, []);
+
+    const removeAssignment = async (assignmentId: string) => {
+        await assignmentsClient.deleteAssignment(assignmentId);
+        dispatch(deleteAssignment(assignmentId));
     };
 
     return (

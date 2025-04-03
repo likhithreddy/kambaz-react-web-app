@@ -3,6 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateAssignment, addAssignment } from "./reducer";
+import * as coursesClient from "../client";
+import * as assignmentsClient from "./client";
 
 export default function AssignmentEditor() {
     const dispatch = useDispatch();
@@ -17,7 +19,19 @@ export default function AssignmentEditor() {
     const points = assignment?.points || 100;
     const dueDate = assignment?.due_date || "";
     const availableDate = assignment?.start_date || "";
-    const untilDate = assignment?.due_date || "";
+    const untilDate = assignment?.until_date || "";
+
+
+    const createAssignmentForCourse = async (assignment: any) => {
+        if (!cid) return;
+        const newAssignment = await coursesClient.createAssignmentForCourse(cid, assignment);
+        dispatch(addAssignment(newAssignment));
+    };
+
+    const saveAssignment = async (assignment: any) => {
+        await assignmentsClient.updateAssignment(assignment);
+        dispatch(updateAssignment(assignment));
+    };
 
     return (
         <div id="wd-assignments-editor">
@@ -78,7 +92,7 @@ export default function AssignmentEditor() {
                     <Form.Control
                         type="date"
                         value={untilDate}
-                        onChange={(e) => setAssignment((prev: any) => ({ ...prev, due_date: e.target.value }))}
+                        onChange={(e) => setAssignment((prev: any) => ({ ...prev, until_date: e.target.value }))}
                     />
                 </Form.Group>
 
@@ -92,9 +106,9 @@ export default function AssignmentEditor() {
                         variant="danger"
                         onClick={() => {
                             if (currentAssignment) {
-                                dispatch(updateAssignment({ ...assignment, course: cid }));
+                                saveAssignment(assignment);
                             } else {
-                                dispatch(addAssignment({ ...assignment, course: cid }));
+                                createAssignmentForCourse(assignment);
                             }
                         }}
                     >
