@@ -178,9 +178,10 @@ export default function Dashboard({
                 <Card>
                   <Link
                     to={
-                      enrollmentStatus[course._id]
-                        ? `/Kambaz/Courses/${course._id}/Home`
-                        : "#"
+                      // enrollmentStatus[course._id]
+                      // ?
+                      `/Kambaz/Courses/${course._id}/Home`
+                      // : "#"
                     }
                     className="wd-dashboard-course-link text-decoration-none text-dark"
                   >

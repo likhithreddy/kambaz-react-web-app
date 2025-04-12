@@ -57,15 +57,6 @@ export default function Kambaz() {
   };
   const updateCourse = async () => {
     const updatedCourse = await courseClient.updateCourse(course);
-    // setCourses(
-    //   courses.map((c) => {
-    //     if (c._id === course._id) {
-    //       return course;
-    //     } else {
-    //       return c;
-    //     }
-    //   })
-    // );
     dispatch({ type: "courses/updateCourse", payload: updatedCourse });
   };
   return (
