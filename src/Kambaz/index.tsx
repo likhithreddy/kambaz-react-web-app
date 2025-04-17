@@ -7,7 +7,6 @@ import "./styles.css";
 import { useEffect, useState } from "react";
 import ProtectedRoute from "./Account/ProtectedRoute";
 import Session from "./Account/Session";
-import * as userClient from "./Account/client";
 import * as courseClient from "./Courses/client";
 import { useDispatch, useSelector } from "react-redux";
 import { setCourses } from "./Courses/reducer";
@@ -25,28 +24,28 @@ export default function Kambaz() {
     description: "New Description",
   });
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  //   const fetchCourses = async () => {
-  //     try {
-  //       const courses = await userClient.findMyCourses();
-  //       // setCourses(courses);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   useEffect(() => {
-  //     fetchCourses();
-  //   }, [currentUser]);
-
+  const fetchCourses = async () => {
+    try {
+      const courses = await courseClient.fetchAllCourses();
+      dispatch(setCourses(courses));
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    const loadCourses = async () => {
-      const allCourses = await courseClient.fetchAllCourses();
-      dispatch(setCourses(allCourses));
-    };
-    loadCourses();
+    fetchCourses();
   }, [currentUser]);
 
+  // useEffect(() => {
+  //   const loadCourses = async () => {
+  //     const allCourses = await courseClient.fetchAllCourses();
+  //     dispatch(setCourses(allCourses));
+  //   };
+  //   loadCourses();
+  // }, [currentUser]);
+
   const addNewCourse = async () => {
-    const newCourse = await userClient.createCourse(course);
+    const newCourse = await courseClient.createCourse(course);
     // setCourses([...courses, newCourse]);
     dispatch({ type: "courses/addCourse", payload: newCourse });
   };
@@ -58,6 +57,7 @@ export default function Kambaz() {
   const updateCourse = async () => {
     const updatedCourse = await courseClient.updateCourse(course);
     dispatch({ type: "courses/updateCourse", payload: updatedCourse });
+    await fetchCourses();
   };
   return (
     <Session>
