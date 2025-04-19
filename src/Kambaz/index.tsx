@@ -96,6 +96,14 @@ export default function Kambaz() {
     dispatch({ type: "courses/addCourse", payload: newCourse });
   };
   const deleteCourse = async (courseId: any) => {
+    try {
+      const enrolledUsers = await courseClient.findUsersForCourse(courseId);
+      for (const user of enrolledUsers) {
+        await userClient.unenrollFromCourse(user._id, courseId);
+      }
+    } catch (error) {
+      console.error("Error unenrolling user for this course:", error);
+    }
     await courseClient.deleteCourse(courseId);
     // setCourses(courses.filter((course) => course._id !== courseId));
     dispatch({ type: "courses/deleteCourse", payload: courseId });
@@ -103,7 +111,7 @@ export default function Kambaz() {
   const updateCourse = async () => {
     const updatedCourse = await courseClient.updateCourse(course);
     dispatch({ type: "courses/updateCourse", payload: updatedCourse });
-    await fetchCourses();
+    await findCoursesForUser();
   };
   return (
     <Session>
