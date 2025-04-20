@@ -253,7 +253,7 @@ export default function Lab1() {
                 id="wd-text-fields-dob" /><br />
             <h4>Anchor tag</h4>
             Please<span> <a href="https://www.lipsum.com" id="wd-lipsum">click here</a> to get dummy text<br /></span>
-            Git Code Repository: Please<span> <a href="https://github.com/likhithreddy/kambaz-web-application.git" target="_blank" id="wd-github">click here</a> to go to the code repository.<br /></span>
+            Git Code Repository: Please<span> <a href="https://github.com/likhithreddy/kambaz-web-application.git" target="_blank">click here</a> to go to the code repository.<br /></span>
         </div>
     );
 }
