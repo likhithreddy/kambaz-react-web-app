@@ -1,14 +1,15 @@
-import { useState } from "react";
-import { Button, Modal, FormControl } from "react-bootstrap";
+// import { useState } from "react";
+// import { Button, Modal, FormControl } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 export default function QuizControls({
   addQuizHandler,
 }: {
   addQuizHandler: () => void;
 }) {
-  const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
+  // const [show, setShow] = useState(false);
+  // const handleShow = () => setShow(true);
+  // const handleClose = () => setShow(false);
 
   return (
     <>
