@@ -1,14 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type Quiz = {
-  _id: string;
-  title: string;
-  published: boolean;
-  course: string;
-};
-
-const initialState: { quizzes: Quiz[] } = {
-  quizzes: [],
+const initialState = {
+  quizzes: [] as any[],
 };
 
 const quizSlice = createSlice({

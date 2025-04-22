@@ -32,3 +32,62 @@ export const togglePublish = async (quizId: string) => {
   );
   return data;
 };
+
+export const getQuizById = async (quizId: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${QUIZZES_API}/quizzes/${quizId}`
+  );
+  return data;
+};
+
+export const updateQuiz = async (quiz: any) => {
+  const { data } = await axiosWithCredentials.put(
+    `${QUIZZES_API}/quizzes/${quiz._id}`,
+    quiz
+  );
+  return data;
+};
+
+export const getQuestions = async (quizId: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${QUIZZES_API}/quizzes/${quizId}/questions`
+  );
+  return data;
+};
+
+export const createQuestion = async (quizId: string) => {
+  const { data } = await axiosWithCredentials.post(
+    `${QUIZZES_API}/quizzes/${quizId}/questions`
+  );
+  return data;
+};
+
+export const updateQuestion = async (question: any) => {
+  const { data } = await axiosWithCredentials.put(
+    `${QUIZZES_API}/questions/${question._id}`,
+    question
+  );
+  return data;
+};
+
+export const deleteQuestion = async (id: string) => {
+  const { data } = await axiosWithCredentials.delete(
+    `${QUIZZES_API}/questions/${id}`
+  );
+  return data;
+};
+
+export const submitAttempt = async (quizId: string, answers: any) => {
+  const { data } = await axiosWithCredentials.post(
+    `${QUIZZES_API}/quizzes/${quizId}/attempts`,
+    answers
+  );
+  return data;
+};
+
+export const getAttempts = async (quizId: string) => {
+  const { data } = await axiosWithCredentials.get(
+    `${QUIZZES_API}/quizzes/${quizId}/attempts`
+  );
+  return data;
+};

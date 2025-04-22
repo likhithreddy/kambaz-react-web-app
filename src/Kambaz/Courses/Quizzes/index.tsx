@@ -36,6 +36,11 @@ export default function Quizzes() {
     fetchQuizzes();
   }, [cid]);
 
+  const visibleQuizzes =
+    currentUser?.role === "FACULTY"
+      ? quizzes
+      : quizzes.filter((q: any) => q.published);
+
   return (
     <div>
       {currentUser?.role === "FACULTY" && (
@@ -45,10 +50,10 @@ export default function Quizzes() {
       <br />
       <br />
       <br />
-      {quizzes.length === 0 ? (
-        <p className="mt-4">No quizzes yet. Click + Quiz to create one.</p>
+      {visibleQuizzes.length === 0 ? (
+        <p className="mt-4">No quizzes available.</p>
       ) : (
-        quizzes.map((quiz: any) => (
+        visibleQuizzes.map((quiz: any) => (
           <QuizCard
             key={quiz._id}
             quiz={quiz}
