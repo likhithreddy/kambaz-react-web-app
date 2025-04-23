@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import * as quizzesClient from "./client";
 import { useSelector } from "react-redux";
+import { Button, Card, Form, Table, Alert } from "react-bootstrap";
 
 export default function QuizPreview() {
   const { qid, cid } = useParams();
@@ -12,21 +13,25 @@ export default function QuizPreview() {
   const [attempts, setAttempts] = useState<any[]>([]);
   const [currentAttempt, setCurrentAttempt] = useState<any>(null);
 
+  const isFaculty = currentUser?.role === "FACULTY";
+
   useEffect(() => {
     const load = async () => {
       const q = await quizzesClient.getQuizById(qid!);
       const qs = await quizzesClient.getQuestions(qid!);
-      const a = await quizzesClient.getAttempts(qid!);
       setQuiz(q);
       setQuestions(qs);
-      setAttempts(a);
-      //   setCurrentAttempt(a[0]); // most recent attempt
-      const allowed = q.multipleAttempts ? q.howManyAttempts || 1 : 1;
 
-      if (a.length < allowed) {
-        setCurrentAttempt(null);
-      } else {
-        setCurrentAttempt(a[0]);
+      if (!isFaculty) {
+        const a = await quizzesClient.getAttempts(qid!);
+        setAttempts(a);
+
+        const allowed = q.multipleAttempts ? q.howManyAttempts || 1 : 1;
+        if (a.length < allowed) {
+          setCurrentAttempt(null);
+        } else {
+          setCurrentAttempt(a[0]);
+        }
       }
     };
     load();
@@ -37,6 +42,13 @@ export default function QuizPreview() {
   };
 
   const handleSubmit = async () => {
+    if (isFaculty) {
+      alert("This is a preview. Your attempt won’t be saved.");
+      const previewAttempt = evaluateAnswers();
+      setCurrentAttempt(previewAttempt);
+      return;
+    }
+
     if (attempts.length >= (quiz.howManyAttempts || 1)) {
       alert("You've reached the max number of attempts.");
       return;
@@ -45,7 +57,7 @@ export default function QuizPreview() {
     const a = await quizzesClient.submitAttempt(qid!, answers);
     setAttempts([a, ...attempts]);
     setCurrentAttempt(a);
-    setAnswers({}); // clear form
+    setAnswers({});
   };
 
   const handleRetake = () => {
@@ -53,15 +65,47 @@ export default function QuizPreview() {
     setCurrentAttempt(null);
   };
 
+  const evaluateAnswers = () => {
+    let score = 0;
+    const answered = questions.map((q) => {
+      const answer = answers[q._id];
+      let correct = false;
+
+      if (q.type === "MULTIPLE_CHOICE") {
+        const correctChoice = q.choices.find((c: any) => c.isCorrect);
+        correct = correctChoice?.text === answer;
+      } else if (q.type === "TRUE_FALSE") {
+        correct = q.correctAnswer === answer;
+      } else if (q.type === "FILL_BLANK") {
+        correct = (q.correctAnswers || []).some(
+          (ans: string) =>
+            ans.toLowerCase().trim() === answer?.toLowerCase().trim()
+        );
+      }
+
+      if (correct) score += q.points || 0;
+
+      return {
+        questionId: q._id,
+        answer,
+        correct,
+      };
+    });
+
+    return {
+      score,
+      answers: answered,
+      submittedAt: new Date().toISOString(),
+    };
+  };
+
   if (!quiz || questions.length === 0) return <div>Loading...</div>;
 
-  if (currentUser?.role !== "FACULTY" && !quiz.published) {
+  if (!isFaculty && !quiz.published) {
     return (
       <div className="container mt-4">
         <h2>{quiz.title}</h2>
-        <div className="alert alert-warning">
-          This quiz is not published yet.
-        </div>
+        <Alert variant="warning">This quiz is not published yet.</Alert>
       </div>
     );
   }
@@ -75,16 +119,14 @@ export default function QuizPreview() {
     : null;
 
   if (
-    currentUser?.role !== "FACULTY" &&
+    !isFaculty &&
     ((availableFrom && now < availableFrom) ||
       (availableUntil && now > availableUntil))
   ) {
     return (
       <div className="container mt-4">
         <h2>{quiz.title}</h2>
-        <div className="alert alert-info">
-          This quiz is not currently available.
-        </div>
+        <Alert variant="info">This quiz is not currently available.</Alert>
       </div>
     );
   }
@@ -100,10 +142,10 @@ export default function QuizPreview() {
 
       <h2>{quiz.title}</h2>
 
-      {attempts.length > 0 && (
+      {!isFaculty && attempts.length > 0 && (
         <div className="mb-4">
           <h5>Previous Attempts</h5>
-          <table className="table table-bordered">
+          <Table bordered>
             <thead>
               <tr>
                 <th>#</th>
@@ -120,72 +162,43 @@ export default function QuizPreview() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         </div>
       )}
 
-      {quiz.multipleAttempts && (
-        <div className="text-muted">
+      {quiz.multipleAttempts && !isFaculty && (
+        <div className="text-muted mb-2">
           You’ve used {attempts.length} of {quiz.howManyAttempts || 1} attempts.
         </div>
       )}
 
-      <div className="mt-3">
-        {questions.map((q, i) => {
-          const submitted = currentAttempt?.answers?.find(
-            (a: any) => a.questionId === q._id
-          );
-          const isCorrect = submitted?.correct;
-          const answerValue = currentAttempt
-            ? submitted?.answer
-            : answers[q._id];
+      {questions.map((q, i) => {
+        const submitted = currentAttempt?.answers?.find(
+          (a: any) => a.questionId === q._id
+        );
+        const isCorrect = submitted?.correct;
+        const answerValue = currentAttempt ? submitted?.answer : answers[q._id];
 
-          return (
-            <div key={q._id} className="mb-4 border p-3 rounded">
-              <h5>Question {i + 1}</h5>
-              <p>{q.question}</p>
+        return (
+          <Card key={q._id} className="mb-4">
+            <Card.Body>
+              <Card.Title>Question {i + 1}</Card.Title>
+              <Card.Text>{q.question}</Card.Text>
 
+              {/* MULTIPLE CHOICE */}
               {q.type === "MULTIPLE_CHOICE" &&
                 q.choices.map((c: any, idx: number) => (
-                  <div className="form-check" key={idx}>
-                    <input
-                      type="radio"
-                      name={q._id}
-                      disabled={!!currentAttempt}
-                      checked={answerValue === c.text}
-                      onChange={() => handleChange(q._id, c.text)}
-                      className="form-check-input"
-                    />
-                    <label className="form-check-label">
-                      {c.text}
-                      {currentAttempt && c.text === submitted?.answer && (
-                        <span
-                          className={`ms-2 ${
-                            isCorrect ? "text-success" : "text-danger"
-                          }`}
-                        >
-                          {isCorrect ? "✓" : "✗"}
-                        </span>
-                      )}
-                    </label>
-                  </div>
-                ))}
-
-              {q.type === "TRUE_FALSE" &&
-                ["True", "False"].map((val) => (
-                  <div className="form-check" key={val}>
-                    <input
-                      type="radio"
-                      name={q._id}
-                      disabled={!!currentAttempt}
-                      checked={answerValue === (val === "True")}
-                      onChange={() => handleChange(q._id, val === "True")}
-                      className="form-check-input"
-                    />
-                    <label className="form-check-label">
-                      {val}
-                      {currentAttempt &&
-                        (val === "True") === submitted?.answer && (
+                  <Form.Check
+                    type="radio"
+                    name={q._id}
+                    key={idx}
+                    disabled={!!currentAttempt}
+                    checked={answerValue === c.text}
+                    onChange={() => handleChange(q._id, c.text)}
+                    label={
+                      <>
+                        {c.text}
+                        {currentAttempt && c.text === submitted?.answer && (
                           <span
                             className={`ms-2 ${
                               isCorrect ? "text-success" : "text-danger"
@@ -194,18 +207,47 @@ export default function QuizPreview() {
                             {isCorrect ? "✓" : "✗"}
                           </span>
                         )}
-                    </label>
-                  </div>
+                      </>
+                    }
+                  />
                 ))}
 
+              {/* TRUE / FALSE */}
+              {q.type === "TRUE_FALSE" &&
+                ["True", "False"].map((val) => (
+                  <Form.Check
+                    key={val}
+                    type="radio"
+                    name={q._id}
+                    disabled={!!currentAttempt}
+                    checked={answerValue === (val === "True")}
+                    onChange={() => handleChange(q._id, val === "True")}
+                    label={
+                      <>
+                        {val}
+                        {currentAttempt &&
+                          (val === "True") === submitted?.answer && (
+                            <span
+                              className={`ms-2 ${
+                                isCorrect ? "text-success" : "text-danger"
+                              }`}
+                            >
+                              {isCorrect ? "✓" : "✗"}
+                            </span>
+                          )}
+                      </>
+                    }
+                  />
+                ))}
+
+              {/* FILL IN THE BLANK */}
               {q.type === "FILL_BLANK" && (
                 <div>
-                  <input
+                  <Form.Control
                     type="text"
                     disabled={!!currentAttempt}
                     value={answerValue || ""}
                     onChange={(e) => handleChange(q._id, e.target.value)}
-                    className="form-control"
                   />
                   {currentAttempt && (
                     <div className="mt-2">
@@ -218,29 +260,31 @@ export default function QuizPreview() {
                   )}
                 </div>
               )}
-            </div>
-          );
-        })}
+            </Card.Body>
+          </Card>
+        );
+      })}
+
+      <div className="mt-4 text-end">
+        {currentAttempt ? (
+          !isFaculty &&
+          attempts.length < (quiz.howManyAttempts || 1) && (
+            <Button variant="warning" onClick={handleRetake}>
+              Retake Quiz
+            </Button>
+          )
+        ) : (
+          <Button variant="success" onClick={handleSubmit}>
+            Submit Quiz
+          </Button>
+        )}
+        <Link
+          to={`/Kambaz/Courses/${cid}/Quizzes/${quiz._id}`}
+          className="btn btn-danger mx-3"
+        >
+          Back
+        </Link>
       </div>
-
-      {/* {!currentAttempt && (
-        <button className="btn btn-success mt-3" onClick={handleSubmit}>
-          Submit Quiz
-        </button>
-      )} */}
-
-      {currentAttempt ? (
-        attempts.length <
-          (quiz.multipleAttempts ? quiz.howManyAttempts || 1 : 1) && (
-          <button className="btn btn-warning mt-3" onClick={handleRetake}>
-            Retake Quiz
-          </button>
-        )
-      ) : (
-        <button className="btn btn-success mt-3" onClick={handleSubmit}>
-          Submit Quiz
-        </button>
-      )}
     </div>
   );
 }

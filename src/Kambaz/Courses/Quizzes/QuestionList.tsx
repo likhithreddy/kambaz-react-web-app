@@ -1,14 +1,30 @@
 import { useEffect, useState } from "react";
 import * as quizzesClient from "./client";
 import QuestionEditor from "./QuestionEditor";
+import { Button } from "react-bootstrap";
 
-export default function QuestionList({ quizId }: { quizId: string }) {
+export default function QuestionList({
+  quizId,
+  updateQuizStats,
+}: {
+  quizId: string;
+  updateQuizStats?: (summary: {
+    totalPoints: number;
+    numQuestions: number;
+  }) => void;
+}) {
   const [questions, setQuestions] = useState<any[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const fetchQuestions = async () => {
     const data = await quizzesClient.getQuestions(quizId);
     setQuestions(data);
+
+    const totalPoints = data.reduce(
+      (sum: any, q: any) => sum + (q.points || 0),
+      0
+    );
+    updateQuizStats?.({ totalPoints, numQuestions: data.length });
   };
 
   const addQuestion = async () => {
@@ -22,11 +38,18 @@ export default function QuestionList({ quizId }: { quizId: string }) {
     const newList = questions.map((q) => (q._id === updated._id ? updated : q));
     setQuestions(newList);
     setEditingId(null);
+
+    const totalPoints = newList.reduce((sum, q) => sum + (q.points || 0), 0);
+    updateQuizStats?.({ totalPoints, numQuestions: newList.length });
   };
 
   const deleteQuestion = async (id: string) => {
+    const newList = questions.filter((q) => q._id !== id);
+    setQuestions(newList);
     await quizzesClient.deleteQuestion(id);
-    setQuestions(questions.filter((q) => q._id !== id));
+
+    const totalPoints = newList.reduce((sum, q) => sum + (q.points || 0), 0);
+    updateQuizStats?.({ totalPoints, numQuestions: newList.length });
   };
 
   useEffect(() => {
@@ -37,9 +60,14 @@ export default function QuestionList({ quizId }: { quizId: string }) {
 
   return (
     <div>
-      <button className="btn btn-success mb-3" onClick={addQuestion}>
+      <Button
+        variant="success"
+        size="sm"
+        className="mb-3"
+        onClick={addQuestion}
+      >
         + Add Question
-      </button>
+      </Button>
       <p>
         <strong>Total Points:</strong> {totalPoints}
       </p>

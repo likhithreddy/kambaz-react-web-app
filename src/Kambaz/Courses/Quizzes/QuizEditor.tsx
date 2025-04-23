@@ -45,7 +45,7 @@ export default function QuizEditor({
       <h2>{quiz.title}</h2>
       <div className="btn-group mb-3">
         <button
-          className={`btn btn-outline-primary ${
+          className={`btn btn-outline-danger ${
             tab === "details" ? "active" : ""
           }`}
           onClick={() => setTab("details")}
@@ -53,7 +53,7 @@ export default function QuizEditor({
           Details
         </button>
         <button
-          className={`btn btn-outline-primary ${
+          className={`btn btn-outline-danger ${
             tab === "questions" ? "active" : ""
           }`}
           onClick={() => setTab("questions")}
@@ -69,7 +69,16 @@ export default function QuizEditor({
           <QuizMetadata quiz={quiz} />
         )
       ) : (
-        <QuestionList quizId={qid!} />
+        <QuestionList
+          quizId={qid!}
+          updateQuizStats={({ totalPoints, numQuestions }) => {
+            setQuiz((prev: any) => ({
+              ...prev,
+              points: totalPoints,
+              questionsCount: numQuestions,
+            }));
+          }}
+        />
       )}
     </div>
   );
