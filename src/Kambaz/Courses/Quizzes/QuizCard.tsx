@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { MdDelete } from "react-icons/md";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { FaBan } from "react-icons/fa";
+import { Dropdown } from "react-bootstrap";
+import { CiMenuKebab } from "react-icons/ci";
+import "./QuizCard.css";
 
 export default function QuizCard({
   quiz,
@@ -12,6 +14,7 @@ export default function QuizCard({
 }: any) {
   const { cid } = useParams();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const navigate = useNavigate();
 
   const now = new Date();
   const availableFrom = quiz.availableFrom
@@ -77,14 +80,26 @@ export default function QuizCard({
                 <FaBan className="text-danger fs-4" />
               )}
             </div>
-            <div
-              className="text-danger mx-4"
-              role="button"
-              onClick={() => onDelete(quiz._id)}
-              title="Delete Quiz"
-            >
-              <MdDelete className="fs-4" />
-            </div>
+            <Dropdown className="mx-3">
+              <Dropdown.Toggle className="no-caret" variant="light" size="sm">
+                <CiMenuKebab className="fs-4" />
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  onClick={() =>
+                    navigate(`/Kambaz/Courses/${cid}/Quizzes/${quiz._id}/edit`)
+                  }
+                >
+                  Edit
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => onDelete(quiz._id)}>
+                  Delete
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => onTogglePublish(quiz._id)}>
+                  {quiz.published ? "Unpublish" : "Publish"}
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         )}
       </div>
